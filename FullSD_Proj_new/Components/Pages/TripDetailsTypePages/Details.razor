@@ -1,0 +1,60 @@
+﻿@page "/tripdetailstypes/details"
+@using Microsoft.EntityFrameworkCore
+@using FullSD_Proj_new.Domain
+@inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>TripDetailsType</h2>
+    <hr />
+    @if (tripdetailstype is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Note</dt>
+            <dd class="col-sm-10">@tripdetailstype.Note</dd>
+            <dt class="col-sm-2">Activity</dt>
+            <dd class="col-sm-10">@tripdetailstype.Activity</dd>
+            <dt class="col-sm-2">Accomodation</dt>
+            <dd class="col-sm-10">@tripdetailstype.Accomodation</dd>
+            <dt class="col-sm-2">Transport</dt>
+            <dd class="col-sm-10">@tripdetailstype.Transport</dd>
+            <dt class="col-sm-2">DateCreated</dt>
+            <dd class="col-sm-10">@tripdetailstype.DateCreated</dd>
+            <dt class="col-sm-2">DateUpdated</dt>
+            <dd class="col-sm-10">@tripdetailstype.DateUpdated</dd>
+            <dt class="col-sm-2">CreatedBy</dt>
+            <dd class="col-sm-10">@tripdetailstype.CreatedBy</dd>
+            <dt class="col-sm-2">UpdatedBy</dt>
+            <dd class="col-sm-10">@tripdetailstype.UpdatedBy</dd>
+        </dl>
+        <div>
+            <a href="@($"/tripdetailstypes/edit?id={tripdetailstype.Id}")">Edit</a> |
+            <a href="@($"/tripdetailstypes")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private TripDetailsType? tripdetailstype;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        tripdetailstype = await context.TripDetailsType.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (tripdetailstype is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

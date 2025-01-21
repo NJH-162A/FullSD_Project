@@ -1,0 +1,84 @@
+﻿@page "/trips/create"
+@using Microsoft.EntityFrameworkCore
+@using FullSD_Proj_new.Domain
+@inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>Trip</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Trip" OnValidSubmit="AddTrip" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="tripname" class="form-label">TripName:</label> 
+                <InputText id="tripname" @bind-Value="Trip.TripName" class="form-control" /> 
+                <ValidationMessage For="() => Trip.TripName" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="destination" class="form-label">Destination:</label> 
+                <InputText id="destination" @bind-Value="Trip.Destination" class="form-control" /> 
+                <ValidationMessage For="() => Trip.Destination" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="tripstartdate" class="form-label">TripStartDate:</label> 
+                <InputDate id="tripstartdate" @bind-Value="Trip.TripStartDate" class="form-control" /> 
+                <ValidationMessage For="() => Trip.TripStartDate" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="tripenddate" class="form-label">TripEndDate:</label> 
+                <InputDate id="tripenddate" @bind-Value="Trip.TripEndDate" class="form-control" /> 
+                <ValidationMessage For="() => Trip.TripEndDate" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="userid" class="form-label">UserId:</label> 
+                <InputText id="userid" @bind-Value="Trip.UserId" class="form-control" /> 
+                <ValidationMessage For="() => Trip.UserId" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="datecreated" class="form-label">DateCreated:</label> 
+                <InputDate id="datecreated" @bind-Value="Trip.DateCreated" class="form-control" /> 
+                <ValidationMessage For="() => Trip.DateCreated" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="dateupdated" class="form-label">DateUpdated:</label> 
+                <InputDate id="dateupdated" @bind-Value="Trip.DateUpdated" class="form-control" /> 
+                <ValidationMessage For="() => Trip.DateUpdated" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="createdby" class="form-label">CreatedBy:</label> 
+                <InputText id="createdby" @bind-Value="Trip.CreatedBy" class="form-control" /> 
+                <ValidationMessage For="() => Trip.CreatedBy" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="updatedby" class="form-label">UpdatedBy:</label> 
+                <InputText id="updatedby" @bind-Value="Trip.UpdatedBy" class="form-control" /> 
+                <ValidationMessage For="() => Trip.UpdatedBy" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/trips">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Trip Trip { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddTrip()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Trip.Add(Trip);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/trips");
+    }
+}

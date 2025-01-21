@@ -1,0 +1,144 @@
+﻿@page "/transports/edit"
+@using Microsoft.EntityFrameworkCore
+@using FullSD_Proj_new.Domain
+@inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>Transport</h2>
+<hr />
+@if (Transport is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Transport" OnValidSubmit="UpdateTransport" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary role="alert"/>
+                <input type="hidden" name="Transport.Id" value="@Transport.Id" />
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date:</label>
+                    <InputDate id="date" @bind-Value="Transport.Date" class="form-control" />
+                    <ValidationMessage For="() => Transport.Date" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="departuretime" class="form-label">DepartureTime:</label>
+                    <InputDate id="departuretime" @bind-Value="Transport.DepartureTime" class="form-control" />
+                    <ValidationMessage For="() => Transport.DepartureTime" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="arrivaltime" class="form-label">ArrivalTime:</label>
+                    <InputDate id="arrivaltime" @bind-Value="Transport.ArrivalTime" class="form-control" />
+                    <ValidationMessage For="() => Transport.ArrivalTime" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="type" class="form-label">Type:</label>
+                    <InputText id="type" @bind-Value="Transport.Type" class="form-control" />
+                    <ValidationMessage For="() => Transport.Type" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="origin" class="form-label">Origin:</label>
+                    <InputText id="origin" @bind-Value="Transport.Origin" class="form-control" />
+                    <ValidationMessage For="() => Transport.Origin" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="destination" class="form-label">Destination:</label>
+                    <InputText id="destination" @bind-Value="Transport.Destination" class="form-control" />
+                    <ValidationMessage For="() => Transport.Destination" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="bookingref" class="form-label">BookingRef:</label>
+                    <InputText id="bookingref" @bind-Value="Transport.BookingRef" class="form-control" />
+                    <ValidationMessage For="() => Transport.BookingRef" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="tripid" class="form-label">TripId:</label>
+                    <InputNumber id="tripid" @bind-Value="Transport.TripId" class="form-control" />
+                    <ValidationMessage For="() => Transport.TripId" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="datecreated" class="form-label">DateCreated:</label>
+                    <InputDate id="datecreated" @bind-Value="Transport.DateCreated" class="form-control" />
+                    <ValidationMessage For="() => Transport.DateCreated" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dateupdated" class="form-label">DateUpdated:</label>
+                    <InputDate id="dateupdated" @bind-Value="Transport.DateUpdated" class="form-control" />
+                    <ValidationMessage For="() => Transport.DateUpdated" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="createdby" class="form-label">CreatedBy:</label>
+                    <InputText id="createdby" @bind-Value="Transport.CreatedBy" class="form-control" />
+                    <ValidationMessage For="() => Transport.CreatedBy" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="updatedby" class="form-label">UpdatedBy:</label>
+                    <InputText id="updatedby" @bind-Value="Transport.UpdatedBy" class="form-control" />
+                    <ValidationMessage For="() => Transport.UpdatedBy" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/transports">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private Transport? Transport { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Transport ??= await context.Transport.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (Transport is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more information, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task UpdateTransport()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(Transport!).State = EntityState.Modified;
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!TransportExists(Transport!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/transports");
+    }
+
+    private bool TransportExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.Transport.Any(e => e.Id == id);
+    }
+}

@@ -1,0 +1,66 @@
+﻿@page "/tripdetails/details"
+@using Microsoft.EntityFrameworkCore
+@using FullSD_Proj_new.Domain
+@inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>TripDetail</h2>
+    <hr />
+    @if (tripdetail is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Date</dt>
+            <dd class="col-sm-10">@tripdetail.Date</dd>
+            <dt class="col-sm-2">Time</dt>
+            <dd class="col-sm-10">@tripdetail.Time</dd>
+            <dt class="col-sm-2">Desc1</dt>
+            <dd class="col-sm-10">@tripdetail.Desc1</dd>
+            <dt class="col-sm-2">Desc2</dt>
+            <dd class="col-sm-10">@tripdetail.Desc2</dd>
+            <dt class="col-sm-2">TripId</dt>
+            <dd class="col-sm-10">@tripdetail.TripId</dd>
+            <dt class="col-sm-2">LocationId</dt>
+            <dd class="col-sm-10">@tripdetail.LocationId</dd>
+            <dt class="col-sm-2">TripDetailsTypeId</dt>
+            <dd class="col-sm-10">@tripdetail.TripDetailsTypeId</dd>
+            <dt class="col-sm-2">DateCreated</dt>
+            <dd class="col-sm-10">@tripdetail.DateCreated</dd>
+            <dt class="col-sm-2">DateUpdated</dt>
+            <dd class="col-sm-10">@tripdetail.DateUpdated</dd>
+            <dt class="col-sm-2">CreatedBy</dt>
+            <dd class="col-sm-10">@tripdetail.CreatedBy</dd>
+            <dt class="col-sm-2">UpdatedBy</dt>
+            <dd class="col-sm-10">@tripdetail.UpdatedBy</dd>
+        </dl>
+        <div>
+            <a href="@($"/tripdetails/edit?id={tripdetail.Id}")">Edit</a> |
+            <a href="@($"/tripdetails")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private TripDetail? tripdetail;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        tripdetail = await context.TripDetail.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (tripdetail is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

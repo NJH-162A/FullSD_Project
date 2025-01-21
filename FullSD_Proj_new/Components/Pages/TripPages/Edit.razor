@@ -1,0 +1,129 @@
+﻿@page "/trips/edit"
+@using Microsoft.EntityFrameworkCore
+@using FullSD_Proj_new.Domain
+@inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>Trip</h2>
+<hr />
+@if (Trip is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Trip" OnValidSubmit="UpdateTrip" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary role="alert"/>
+                <input type="hidden" name="Trip.Id" value="@Trip.Id" />
+                <div class="mb-3">
+                    <label for="tripname" class="form-label">TripName:</label>
+                    <InputText id="tripname" @bind-Value="Trip.TripName" class="form-control" />
+                    <ValidationMessage For="() => Trip.TripName" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="destination" class="form-label">Destination:</label>
+                    <InputText id="destination" @bind-Value="Trip.Destination" class="form-control" />
+                    <ValidationMessage For="() => Trip.Destination" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="tripstartdate" class="form-label">TripStartDate:</label>
+                    <InputDate id="tripstartdate" @bind-Value="Trip.TripStartDate" class="form-control" />
+                    <ValidationMessage For="() => Trip.TripStartDate" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="tripenddate" class="form-label">TripEndDate:</label>
+                    <InputDate id="tripenddate" @bind-Value="Trip.TripEndDate" class="form-control" />
+                    <ValidationMessage For="() => Trip.TripEndDate" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="userid" class="form-label">UserId:</label>
+                    <InputText id="userid" @bind-Value="Trip.UserId" class="form-control" />
+                    <ValidationMessage For="() => Trip.UserId" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="datecreated" class="form-label">DateCreated:</label>
+                    <InputDate id="datecreated" @bind-Value="Trip.DateCreated" class="form-control" />
+                    <ValidationMessage For="() => Trip.DateCreated" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dateupdated" class="form-label">DateUpdated:</label>
+                    <InputDate id="dateupdated" @bind-Value="Trip.DateUpdated" class="form-control" />
+                    <ValidationMessage For="() => Trip.DateUpdated" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="createdby" class="form-label">CreatedBy:</label>
+                    <InputText id="createdby" @bind-Value="Trip.CreatedBy" class="form-control" />
+                    <ValidationMessage For="() => Trip.CreatedBy" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="updatedby" class="form-label">UpdatedBy:</label>
+                    <InputText id="updatedby" @bind-Value="Trip.UpdatedBy" class="form-control" />
+                    <ValidationMessage For="() => Trip.UpdatedBy" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/trips">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private Trip? Trip { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Trip ??= await context.Trip.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (Trip is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more information, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task UpdateTrip()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(Trip!).State = EntityState.Modified;
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!TripExists(Trip!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/trips");
+    }
+
+    private bool TripExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.Trip.Any(e => e.Id == id);
+    }
+}

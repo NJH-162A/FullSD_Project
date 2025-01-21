@@ -1,0 +1,139 @@
+﻿@page "/tripdetails/edit"
+@using Microsoft.EntityFrameworkCore
+@using FullSD_Proj_new.Domain
+@inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>TripDetail</h2>
+<hr />
+@if (TripDetail is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="TripDetail" OnValidSubmit="UpdateTripDetail" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary role="alert"/>
+                <input type="hidden" name="TripDetail.Id" value="@TripDetail.Id" />
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date:</label>
+                    <InputDate id="date" @bind-Value="TripDetail.Date" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.Date" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="time" class="form-label">Time:</label>
+                    <InputDate id="time" @bind-Value="TripDetail.Time" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.Time" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="desc1" class="form-label">Desc1:</label>
+                    <InputText id="desc1" @bind-Value="TripDetail.Desc1" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.Desc1" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="desc2" class="form-label">Desc2:</label>
+                    <InputText id="desc2" @bind-Value="TripDetail.Desc2" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.Desc2" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="tripid" class="form-label">TripId:</label>
+                    <InputNumber id="tripid" @bind-Value="TripDetail.TripId" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.TripId" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="locationid" class="form-label">LocationId:</label>
+                    <InputText id="locationid" @bind-Value="TripDetail.LocationId" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.LocationId" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="tripdetailstypeid" class="form-label">TripDetailsTypeId:</label>
+                    <InputText id="tripdetailstypeid" @bind-Value="TripDetail.TripDetailsTypeId" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.TripDetailsTypeId" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="datecreated" class="form-label">DateCreated:</label>
+                    <InputDate id="datecreated" @bind-Value="TripDetail.DateCreated" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.DateCreated" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dateupdated" class="form-label">DateUpdated:</label>
+                    <InputDate id="dateupdated" @bind-Value="TripDetail.DateUpdated" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.DateUpdated" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="createdby" class="form-label">CreatedBy:</label>
+                    <InputText id="createdby" @bind-Value="TripDetail.CreatedBy" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.CreatedBy" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="updatedby" class="form-label">UpdatedBy:</label>
+                    <InputText id="updatedby" @bind-Value="TripDetail.UpdatedBy" class="form-control" />
+                    <ValidationMessage For="() => TripDetail.UpdatedBy" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/tripdetails">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private TripDetail? TripDetail { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        TripDetail ??= await context.TripDetail.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (TripDetail is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more information, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task UpdateTripDetail()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(TripDetail!).State = EntityState.Modified;
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!TripDetailExists(TripDetail!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/tripdetails");
+    }
+
+    private bool TripDetailExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.TripDetail.Any(e => e.Id == id);
+    }
+}

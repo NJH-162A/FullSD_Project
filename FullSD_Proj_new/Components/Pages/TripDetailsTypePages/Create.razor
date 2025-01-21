@@ -1,0 +1,79 @@
+﻿@page "/tripdetailstypes/create"
+@using Microsoft.EntityFrameworkCore
+@using FullSD_Proj_new.Domain
+@inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>TripDetailsType</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="TripDetailsType" OnValidSubmit="AddTripDetailsType" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="note" class="form-label">Note:</label> 
+                <InputText id="note" @bind-Value="TripDetailsType.Note" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.Note" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="activity" class="form-label">Activity:</label> 
+                <InputText id="activity" @bind-Value="TripDetailsType.Activity" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.Activity" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="accomodation" class="form-label">Accomodation:</label> 
+                <InputText id="accomodation" @bind-Value="TripDetailsType.Accomodation" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.Accomodation" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="transport" class="form-label">Transport:</label> 
+                <InputText id="transport" @bind-Value="TripDetailsType.Transport" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.Transport" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="datecreated" class="form-label">DateCreated:</label> 
+                <InputDate id="datecreated" @bind-Value="TripDetailsType.DateCreated" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.DateCreated" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="dateupdated" class="form-label">DateUpdated:</label> 
+                <InputDate id="dateupdated" @bind-Value="TripDetailsType.DateUpdated" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.DateUpdated" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="createdby" class="form-label">CreatedBy:</label> 
+                <InputText id="createdby" @bind-Value="TripDetailsType.CreatedBy" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.CreatedBy" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="updatedby" class="form-label">UpdatedBy:</label> 
+                <InputText id="updatedby" @bind-Value="TripDetailsType.UpdatedBy" class="form-control" /> 
+                <ValidationMessage For="() => TripDetailsType.UpdatedBy" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/tripdetailstypes">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private TripDetailsType TripDetailsType { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddTripDetailsType()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.TripDetailsType.Add(TripDetailsType);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/tripdetailstypes");
+    }
+}
