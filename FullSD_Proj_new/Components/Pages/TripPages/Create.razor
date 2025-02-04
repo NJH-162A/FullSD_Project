@@ -39,7 +39,7 @@
                 <label for="userid" class="form-label">UserId:</label> 
                 <InputText id="userid" @bind-Value="Trip.UserId" class="form-control" /> 
                 <ValidationMessage For="() => Trip.UserId" class="text-danger" /> 
-            </div>        
+@*             </div>        
             <div class="mb-3">
                 <label for="datecreated" class="form-label">DateCreated:</label> 
                 <InputDate id="datecreated" @bind-Value="Trip.DateCreated" class="form-control" /> 
@@ -58,8 +58,8 @@
             <div class="mb-3">
                 <label for="updatedby" class="form-label">UpdatedBy:</label> 
                 <InputText id="updatedby" @bind-Value="Trip.UpdatedBy" class="form-control" /> 
-                <ValidationMessage For="() => Trip.UpdatedBy" class="text-danger" /> 
-            </div>        
+                <ValidationMessage For="() => Trip.UpdatedBy" class="text-danger" /> *@
+            </div>         
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
     </div>

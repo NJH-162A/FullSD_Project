@@ -6,7 +6,7 @@
 @implements IAsyncDisposable
 @inject IDbContextFactory<FullSD_Proj_new.Data.FullSD_Proj_newContext> DbFactory
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Trips:</PageTitle>
 
 <h1>Index</h1>
 
@@ -20,11 +20,12 @@
     <PropertyColumn Property="trip => trip.TripStartDate" />
     <PropertyColumn Property="trip => trip.TripEndDate" />
     <PropertyColumn Property="trip => trip.UserId" />
-    <PropertyColumn Property="trip => trip.DateCreated" />
+        
+    @* <PropertyColumn Property="trip => trip.DateCreated" />
     <PropertyColumn Property="trip => trip.DateUpdated" />
     <PropertyColumn Property="trip => trip.CreatedBy" />
-    <PropertyColumn Property="trip => trip.UpdatedBy" />
-
+    <PropertyColumn Property="trip => trip.UpdatedBy" /> *@
+        
     <TemplateColumn Context="trip">
         <a href="@($"trips/edit?id={trip.Id}")">Edit</a> |
         <a href="@($"trips/details?id={trip.Id}")">Details</a> |

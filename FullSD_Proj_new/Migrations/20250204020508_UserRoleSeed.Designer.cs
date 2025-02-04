@@ -4,6 +4,7 @@ using FullSD_Proj_new.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FullSD_Proj_new.Migrations
 {
     [DbContext(typeof(FullSD_Proj_newContext))]
-    partial class FullSD_Proj_newContextModelSnapshot : ModelSnapshot
+    [Migration("20250204020508_UserRoleSeed")]
+    partial class UserRoleSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
