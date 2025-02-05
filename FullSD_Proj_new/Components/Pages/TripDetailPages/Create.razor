@@ -21,10 +21,10 @@
                 <ValidationMessage For="() => TripDetail.Date" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="time" class="form-label">Time:</label> 
-                <InputDate id="time" @bind-Value="TripDetail.Time" class="form-control" /> 
-                <ValidationMessage For="() => TripDetail.Time" class="text-danger" /> 
-            </div>        
+                <label for="time" class="form-label">Time:</label>
+                <input id="time" @bind="TripDetail.Time" class="form-control" type="time" />
+                <ValidationMessage For="() => TripDetail.Time" class="text-danger" />
+            </div>
             <div class="mb-3">
                 <label for="desc1" class="form-label">Desc1:</label> 
                 <InputText id="desc1" @bind-Value="TripDetail.Desc1" class="form-control" /> 

@@ -22,14 +22,14 @@
             </div>        
             <div class="mb-3">
                 <label for="departuretime" class="form-label">DepartureTime:</label> 
-                <InputDate id="departuretime" @bind-Value="Transport.DepartureTime" class="form-control" /> 
+                <input id="departuretime" @bind="Transport.DepartureTime" class="form-control" type="time" />
                 <ValidationMessage For="() => Transport.DepartureTime" class="text-danger" /> 
-            </div>        
+            </div>
             <div class="mb-3">
-                <label for="arrivaltime" class="form-label">ArrivalTime:</label> 
-                <InputDate id="arrivaltime" @bind-Value="Transport.ArrivalTime" class="form-control" /> 
-                <ValidationMessage For="() => Transport.ArrivalTime" class="text-danger" /> 
-            </div>        
+                <label for="arrivaltime" class="form-label">ArrivalTime:</label>
+                <input id="arrivaltime" @bind="Transport.ArrivalTime" class="form-control" type="time" />
+                <ValidationMessage For="() => Transport.ArrivalTime" class="text-danger" />
+            </div>
             <div class="mb-3">
                 <label for="type" class="form-label">Type:</label> 
                 <InputText id="type" @bind-Value="Transport.Type" class="form-control" /> 

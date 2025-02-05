@@ -24,7 +24,21 @@
                         <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
                     </NavLink>
                 </div>
-
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Trips">
+                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> Trip
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Accomodations">
+                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> Accomodation
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Transports">
+                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> Transport
+                    </NavLink>
+                </div>
                 <div class="nav-item px-3">
                     <form action="Account/Logout" method="post">
                         <AntiforgeryToken />
