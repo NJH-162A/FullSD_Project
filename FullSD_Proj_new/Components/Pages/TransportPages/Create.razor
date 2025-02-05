@@ -55,22 +55,22 @@
                 <InputNumber id="tripid" @bind-Value="Transport.TripId" class="form-control" /> 
                 <ValidationMessage For="() => Transport.TripId" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="datecreated" class="form-label">DateCreated:</label> 
                 <InputDate id="datecreated" @bind-Value="Transport.DateCreated" class="form-control" /> 
                 <ValidationMessage For="() => Transport.DateCreated" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="dateupdated" class="form-label">DateUpdated:</label> 
                 <InputDate id="dateupdated" @bind-Value="Transport.DateUpdated" class="form-control" /> 
                 <ValidationMessage For="() => Transport.DateUpdated" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="createdby" class="form-label">CreatedBy:</label> 
                 <InputText id="createdby" @bind-Value="Transport.CreatedBy" class="form-control" /> 
                 <ValidationMessage For="() => Transport.CreatedBy" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="updatedby" class="form-label">UpdatedBy:</label> 
                 <InputText id="updatedby" @bind-Value="Transport.UpdatedBy" class="form-control" /> 
                 <ValidationMessage For="() => Transport.UpdatedBy" class="text-danger" /> 

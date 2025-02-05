@@ -22,10 +22,11 @@
     <PropertyColumn Property="accomodation => accomodation.BookingRef" />
     <PropertyColumn Property="accomodation => accomodation.ContactInfo" />
     <PropertyColumn Property="accomodation => accomodation.TripId" />
+        @*
     <PropertyColumn Property="accomodation => accomodation.DateCreated" />
     <PropertyColumn Property="accomodation => accomodation.DateUpdated" />
     <PropertyColumn Property="accomodation => accomodation.CreatedBy" />
-    <PropertyColumn Property="accomodation => accomodation.UpdatedBy" />
+    <PropertyColumn Property="accomodation => accomodation.UpdatedBy" /> *@
 
     <TemplateColumn Context="accomodation">
         <a href="@($"accomodations/edit?id={accomodation.Id}")">Edit</a> |
