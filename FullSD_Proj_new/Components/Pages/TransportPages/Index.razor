@@ -23,10 +23,10 @@
     <PropertyColumn Property="transport => transport.Destination" />
     <PropertyColumn Property="transport => transport.BookingRef" />
     <PropertyColumn Property="transport => transport.TripId" />
-    <PropertyColumn Property="transport => transport.DateCreated" />
+@*     <PropertyColumn Property="transport => transport.DateCreated" />
     <PropertyColumn Property="transport => transport.DateUpdated" />
     <PropertyColumn Property="transport => transport.CreatedBy" />
-    <PropertyColumn Property="transport => transport.UpdatedBy" />
+    <PropertyColumn Property="transport => transport.UpdatedBy" /> *@
 
     <TemplateColumn Context="transport">
         <a href="@($"transports/edit?id={transport.Id}")">Edit</a> |

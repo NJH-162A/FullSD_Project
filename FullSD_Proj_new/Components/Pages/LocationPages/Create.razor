@@ -25,22 +25,22 @@
                 <InputText id="type" @bind-Value="Location.Type" class="form-control" /> 
                 <ValidationMessage For="() => Location.Type" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="datecreated" class="form-label">DateCreated:</label> 
                 <InputDate id="datecreated" @bind-Value="Location.DateCreated" class="form-control" /> 
                 <ValidationMessage For="() => Location.DateCreated" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="dateupdated" class="form-label">DateUpdated:</label> 
                 <InputDate id="dateupdated" @bind-Value="Location.DateUpdated" class="form-control" /> 
                 <ValidationMessage For="() => Location.DateUpdated" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="createdby" class="form-label">CreatedBy:</label> 
                 <InputText id="createdby" @bind-Value="Location.CreatedBy" class="form-control" /> 
                 <ValidationMessage For="() => Location.CreatedBy" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="updatedby" class="form-label">UpdatedBy:</label> 
                 <InputText id="updatedby" @bind-Value="Location.UpdatedBy" class="form-control" /> 
                 <ValidationMessage For="() => Location.UpdatedBy" class="text-danger" /> 
@@ -62,6 +62,12 @@
     private async Task AddLocation()
     {
         using var context = DbFactory.CreateDbContext();
+        //Set the userId to the CreatedBy and UpdatedBy fields.
+        Location.CreatedBy = "System";
+        Location.UpdatedBy = Location.Name;
+        //Set the DateCreated and DateUpdated fields to the current date and time.
+        Location.DateCreated = DateTime.Now;
+        Location.DateUpdated = DateTime.Now;
         context.Location.Add(Location);
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/locations");

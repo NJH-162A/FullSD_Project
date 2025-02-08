@@ -85,6 +85,12 @@ else
     private async Task UpdateLocation()
     {
         using var context = DbFactory.CreateDbContext();
+
+        //Set the userId to the UpdatedBy fields.
+        Location.UpdatedBy = "System";
+        //Set the DateUpdated fields to the current date and time.
+        Location.DateUpdated = DateTime.Now;
+        
         context.Attach(Location!).State = EntityState.Modified;
 
         try

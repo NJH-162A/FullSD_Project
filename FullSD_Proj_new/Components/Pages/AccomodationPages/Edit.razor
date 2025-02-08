@@ -110,6 +110,12 @@ else
     private async Task UpdateAccomodation()
     {
         using var context = DbFactory.CreateDbContext();
+
+        //Set the userId to the UpdatedBy fields.
+        Accomodation.UpdatedBy = "System";
+        //Set the DateUpdated fields to the current date and time.
+        Accomodation.DateUpdated = DateTime.Now;
+
         context.Attach(Accomodation!).State = EntityState.Modified;
 
         try

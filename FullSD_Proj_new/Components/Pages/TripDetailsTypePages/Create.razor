@@ -27,30 +27,46 @@
             </div>        
             <div class="mb-3">
                 <label for="accomodation" class="form-label">Accomodation:</label> 
-                <InputText id="accomodation" @bind-Value="TripDetailsType.Accomodation" class="form-control" /> 
-                <ValidationMessage For="() => TripDetailsType.Accomodation" class="text-danger" /> 
-            </div>        
+                <InputSelect id="accomodationid" @bind-Value="TripDetailsType.Accomodation" class="form-control">
+                    <option value="">-- Select Accomodation --</option>
+                    @if (Accomodations != null)
+                    {
+                        foreach (var accomodation in Accomodations)
+                        {
+                            <option value="@accomodation.Id">@accomodation.Name</option>
+                        }
+                    }
+                </InputSelect>
+            </div>
             <div class="mb-3">
                 <label for="transport" class="form-label">Transport:</label> 
-                <InputText id="transport" @bind-Value="TripDetailsType.Transport" class="form-control" /> 
-                <ValidationMessage For="() => TripDetailsType.Transport" class="text-danger" /> 
+                <InputSelect id="transportid" @bind-Value="TripDetailsType.Transport" class="form-control">
+                    <option value="">-- Select Transport --</option>
+                    @if (Transports != null)
+                    {
+                        foreach (var transport in Transports)
+                        {
+                            <option value="@transport.Id">@transport.Type</option>
+                        }
+                    }
+                </InputSelect>
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="datecreated" class="form-label">DateCreated:</label> 
                 <InputDate id="datecreated" @bind-Value="TripDetailsType.DateCreated" class="form-control" /> 
                 <ValidationMessage For="() => TripDetailsType.DateCreated" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="dateupdated" class="form-label">DateUpdated:</label> 
                 <InputDate id="dateupdated" @bind-Value="TripDetailsType.DateUpdated" class="form-control" /> 
                 <ValidationMessage For="() => TripDetailsType.DateUpdated" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="createdby" class="form-label">CreatedBy:</label> 
                 <InputText id="createdby" @bind-Value="TripDetailsType.CreatedBy" class="form-control" /> 
                 <ValidationMessage For="() => TripDetailsType.CreatedBy" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="updatedby" class="form-label">UpdatedBy:</label> 
                 <InputText id="updatedby" @bind-Value="TripDetailsType.UpdatedBy" class="form-control" /> 
                 <ValidationMessage For="() => TripDetailsType.UpdatedBy" class="text-danger" /> 
@@ -68,11 +84,27 @@
     [SupplyParameterFromForm]
     private TripDetailsType TripDetailsType { get; set; } = new();
 
+    //Declare and initialize FullSD_Proj_new and IList
+    private Data.FullSD_Proj_newContext context = default!;
+    private IList<Transport> Transports;
+    private IList<Accomodation> Accomodations;
+
+    //OnInitialized method to get all Transports andd Accomodations
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+        Transports = context.Transport.ToList();
+        Accomodations = context.Accomodation.ToList();
+
+    }
+
     // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
     private async Task AddTripDetailsType()
     {
         using var context = DbFactory.CreateDbContext();
         context.TripDetailsType.Add(TripDetailsType);
+        TripDetailsType.DateCreated = DateTime.Now;
+        TripDetailsType.DateUpdated = DateTime.Now;
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/tripdetailstypes");
     }
