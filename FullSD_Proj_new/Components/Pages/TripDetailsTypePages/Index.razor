@@ -17,7 +17,7 @@
 <QuickGrid Class="table" Items="context.TripDetailsType">
     <PropertyColumn Property="tripdetailstype => tripdetailstype.Note" />
     <PropertyColumn Property="tripdetailstype => tripdetailstype.Activity" />
-    <PropertyColumn Property="tripdetailstype => tripdetailstype.Accomodation" />
+    <PropertyColumn Property="tripdetailstype => tripdetailstype.Accomodation" Title="Accomodation" />
     <PropertyColumn Property="tripdetailstype => tripdetailstype.Transport" />
     <PropertyColumn Property="tripdetailstype => tripdetailstype.DateCreated" />
     <PropertyColumn Property="tripdetailstype => tripdetailstype.DateUpdated" />
@@ -38,6 +38,7 @@
     {
         context = DbFactory.CreateDbContext();
     }
+
      
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }
