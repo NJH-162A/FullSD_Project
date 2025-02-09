@@ -36,6 +36,14 @@
 @code {
     private FullSD_Proj_newContext context = default!;
 
+    private string userId = string.Empty;
+    private bool isAdmin = false;
+    @inject AuthenticationStateProvider authenticationStateProvider
+    // Filter trips by userId
+    private IQueryable<Trip> FilteredBookings => isAdmin
+    ? context.Trip // Admins can see all bookings
+    : context.Trip.Where(e => e.CreatedBy == userId); // Regular users see only their own bookings
+
     protected override void OnInitialized()
     {
         context = DbFactory.CreateDbContext();
